@@ -1,0 +1,6 @@
+<h2>Evento {{nomeEvent()}}</h2>
+<h3>Quantidade de ingressos: {{quantidadeIngressos()}}</h3>
+<button (click)="diminuirQuantidade()">-</button>
+<button (click)="aumentarQuantidade()">+</button>
+<input type="text" placeholder="Cupom" (keyup.enter)="buscarCupom($event)">
+<button (click)="Cancelamento()">Solicitar Cancelamento</button>

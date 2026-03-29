@@ -1,0 +1,8 @@
+<app-ticket-item-component 
+    nomeEvent="Show do Zé" 
+    [(quantidadeIngressos)]="qtd" 
+    (solicitarCancelamento)="Cancelamento()">
+</app-ticket-item-component>
+
+<p>{{ mensagemStatus() }}</p>
+<p>Total: R$ {{ qtd() * 150 }}</p>
