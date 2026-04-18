@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  background-color: #121212;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  color: #f0f0f0;
+}
+
+h2 { 
+  color: #f5c518; 
+  margin: 0 0 8px 0; 
+}
+
+h3 { 
+  color: #aaa; 
+  font-size: 0.9rem; 
+  margin: 0 0 12px 0; 
+}
+
+button {
+  background-color: #f5c518;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-right: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+input {
+  background-color: #1a1a1a;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #f0f0f0;
+  margin-right: 8px;
+}

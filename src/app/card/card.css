@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  background-color: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  color: #f0f0f0;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+:host:hover {
+  border-color: #f5c518;
+  transform: translateY(-2px);
+}

@@ -1,8 +1,46 @@
-<app-ticket-item-component 
-    nomeEvent="Show do Zé" 
-    [(quantidadeIngressos)]="qtd" 
-    (solicitarCancelamento)="Cancelamento()">
+<app-ticket-item-component
+    nomeEvent="Ingresso Normal"
+    [(quantidadeIngressos)]="qtd"
+    (aumentar)="adicionarIngressoNormal()"
+    (diminuir)="removerIngressoNormal()"
+    (solicitarCancelamento)="Cancelamento()"
+    (aplicarCupom)="AplicarDesconto($event)">
 </app-ticket-item-component>
 
 <p>{{ mensagemStatus() }}</p>
-<p>Total: R$ {{ qtd() * 150 }}</p>
+<p>Total: {{ calcularTotal() | currency:'BRL' }}</p>
+
+<app-card titulo="Ingressos Disponíveis">
+  @for(ingresso of ingressosDisponiveisReservados; track ingresso.id) {
+    <app-card [titulo]="ingresso.nome">
+      <p>Data: {{ ingresso.data | date:'dd/MM/yyyy' }}</p>
+      <p>Preço: {{ ingresso.preco | currency:'BRL' }}</p>
+      <p>Descrição: {{ ingresso.descricao | resumo:30 }}</p>
+      <button (click)="adicionarAoCarrinho(ingresso)">Adicionar ao carrinho</button>
+    </app-card>
+  }
+</app-card>
+
+<app-card titulo="Meu Carrinho">
+  @for(ingresso of carrinho(); track ingresso.id) {
+    <app-card [titulo]="ingresso.nome">
+      <p>Data: {{ ingresso.data | date:'dd/MM/yyyy' }}</p>
+      <p>Preço: {{ ingresso.preco | currency:'BRL' }}</p>
+      <p>Descrição: {{ ingresso.descricao | resumo:30 }}</p>
+
+      @switch (ingresso.tipo) {
+        @case ('VIP') { <span>Acesso Total</span> }
+        @case ('MEIA') { <span>Obrigatório carteirinha</span> }
+        @default { <span>Acesso Padrão</span> }
+      }
+
+      <button (click)="removerDoCarrinho(ingresso.id)">Remover</button>
+    </app-card>
+  } @empty {
+    <p>Seu carrinho está vazio</p>
+  }
+
+  @if (carrinho().length > 2) {
+    <p>Você ganhou um brinde!</p>
+  }
+</app-card>
