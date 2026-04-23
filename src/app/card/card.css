@@ -15,3 +15,8 @@
   border-color: #f5c518;
   transform: translateY(-2px);
 }
+
+h2 {
+  color: var(--card-title-color, #f5c518);
+  margin: 0 0 12px 0;
+}

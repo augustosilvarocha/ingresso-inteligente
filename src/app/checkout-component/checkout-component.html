@@ -12,35 +12,55 @@
 
 <app-card titulo="Ingressos Disponíveis">
   @for(ingresso of ingressosDisponiveisReservados; track ingresso.id) {
-    <app-card [titulo]="ingresso.nome">
-      <p>Data: {{ ingresso.data | date:'dd/MM/yyyy' }}</p>
-      <p>Preço: {{ ingresso.preco | currency:'BRL' }}</p>
-      <p>Descrição: {{ ingresso.descricao | resumo:30 }}</p>
-      <button (click)="adicionarAoCarrinho(ingresso)">Adicionar ao carrinho</button>
-    </app-card>
+    <li [class.ingresso-destaque]="ingresso.tipo === 'VIP'">
+      <app-card [titulo]="ingresso.nome">
+        <p>Data: {{ ingresso.data | date:'dd/MM/yyyy' }}</p>
+        <p>Preço: {{ ingresso.preco | currency:'BRL' }}</p>
+        <p>Descrição: {{ ingresso.descricao | resumo:30 }}</p>
+        <div class="barra-lotacao-container">
+          <div
+            class="barra-lotacao"
+            [style.width.%]="ingresso.lotePercentual"
+            [style.background-color]="ingresso.lotePercentual < 20 ? '#e53935' : '#43a047'">
+          </div>
+        </div>
+        <p class="barra-legenda">{{ ingresso.lotePercentual }}% disponível</p>
+        @if (ingresso.lotePercentual === 0) {
+          <p style="color: #e53935; font-weight: bold;">
+            Ingressos esgotados
+          </p>
+        } @else {
+          <button (click)="adicionarAoCarrinho(ingresso)">
+            Adicionar ao carrinho
+          </button>
+        }
+      </app-card>
+    </li>
   }
 </app-card>
 
-<app-card titulo="Meu Carrinho">
-  @for(ingresso of carrinho(); track ingresso.id) {
-    <app-card [titulo]="ingresso.nome">
-      <p>Data: {{ ingresso.data | date:'dd/MM/yyyy' }}</p>
-      <p>Preço: {{ ingresso.preco | currency:'BRL' }}</p>
-      <p>Descrição: {{ ingresso.descricao | resumo:30 }}</p>
+<div class="carrinho-wrapper">
+  <app-card titulo="Meu Carrinho">
+    @for(ingresso of carrinho(); track ingresso.id) {
+      <li [class.ingresso-destaque]="ingresso.tipo === 'VIP'">
+        <app-card [titulo]="ingresso.nome">
+          <p>Data: {{ ingresso.data | date:'dd/MM/yyyy' }}</p>
+          <p>Preço: {{ ingresso.preco | currency:'BRL' }}</p>
+          <p>Descrição: {{ ingresso.descricao | resumo:30 }}</p>
+          @switch (ingresso.tipo) {
+            @case ('VIP') { <span>Acesso Total</span> }
+            @case ('MEIA') { <span>Obrigatório carteirinha</span> }
+            @default { <span>Acesso Padrão</span> }
+          }
+          <button (click)="removerDoCarrinho(ingresso.id)">Remover</button>
+        </app-card>
+      </li>
+    } @empty {
+      <p>Seu carrinho está vazio</p>
+    }
 
-      @switch (ingresso.tipo) {
-        @case ('VIP') { <span>Acesso Total</span> }
-        @case ('MEIA') { <span>Obrigatório carteirinha</span> }
-        @default { <span>Acesso Padrão</span> }
-      }
-
-      <button (click)="removerDoCarrinho(ingresso.id)">Remover</button>
-    </app-card>
-  } @empty {
-    <p>Seu carrinho está vazio</p>
-  }
-
-  @if (carrinho().length > 2) {
-    <p>Você ganhou um brinde!</p>
-  }
-</app-card>
+    @if (carrinho().length > 2) {
+      <p>Você ganhou um brinde!</p>
+    }
+  </app-card>
+</div>

@@ -42,7 +42,8 @@ export class CheckoutComponent {
       tipo: 'STANDARD',
       data: new Date('2026-09-10T12:00:00'),
       preco: 150,
-      descricao: 'Acesso geral ao evento.'
+      descricao: 'Acesso geral ao evento.',
+      lotePercentual: 55
     };
     this.carrinho.update(atual => [...atual, ingresso]);
   }
@@ -63,7 +64,8 @@ export class CheckoutComponent {
       tipo: 'VIP',
       data: new Date('2026-09-10T12:00:00'),
       preco: 500,
-      descricao: 'Primeira fila e coquetel. Esse ingresso é pra quem quer aproveitar o evento ao máximo. Você fica bem perto do palco, entra antes de todo mundo e ainda curte um coquetel exclusivo no intervalo. Ideal pra fazer networking sem correria e viver a experiência completa'
+      descricao: 'Primeira fila e coquetel. Esse ingresso é pra quem quer aproveitar o evento ao máximo. Você fica bem perto do palco, entra antes de todo mundo e ainda curte um coquetel exclusivo no intervalo. Ideal pra fazer networking sem correria e viver a experiência completa',
+      lotePercentual: 12
     },
     {
       id: 2,
@@ -71,7 +73,8 @@ export class CheckoutComponent {
       tipo: 'STANDARD',
       data: new Date('2026-09-10T12:00:00'),
       preco: 150,
-      descricao: 'Palestras e networking.'
+      descricao: 'Palestras e networking.',
+      lotePercentual: 65
     },
     {
       id: 3,
@@ -79,7 +82,8 @@ export class CheckoutComponent {
       tipo: 'MEIA',
       data: new Date('2026-09-10T12:00:00'),
       preco: 75,
-      descricao: 'Carteirinha obrigatória.'
+      descricao: 'Carteirinha obrigatória.',
+      lotePercentual: 40
     }
   ];
 
@@ -87,10 +91,30 @@ export class CheckoutComponent {
 
   adicionarAoCarrinho(ingresso: any) {
     this.carrinho.update(atual => [...atual, ingresso]);
+    this.ingressosDisponiveisReservados =
+    this.ingressosDisponiveisReservados.map(item => {
+      if (item.id === ingresso.id && item.lotePercentual > 0) {
+        return {
+          ...item,
+          lotePercentual: Math.max(item.lotePercentual - 10, 0)
+        };
+      }
+      return item;
+    });
   }
 
   removerDoCarrinho(id: number) {
     this.carrinho.update(atual => atual.filter(i => i.id !== id));
+    this.ingressosDisponiveisReservados =
+    this.ingressosDisponiveisReservados.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          lotePercentual: Math.min(item.lotePercentual + 10, 100)
+        };
+      }
+      return item;
+    });
   }
 
   calcularTotal() {
