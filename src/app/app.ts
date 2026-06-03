@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { CheckoutComponent } from './checkout-component/checkout-component';
+import { RouterLink, RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
-  imports: [CheckoutComponent],
+  imports: [RouterLink, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

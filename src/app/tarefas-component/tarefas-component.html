@@ -1,0 +1,19 @@
+<div>
+  <h1>Angular Conf 2026 - Tarefas</h1>
+
+  <form [formGroup]="tarefaForm" (ngSubmit)="onSubmit()">
+    <input formControlName="titulo" placeholder="Nova tarefa" />
+
+    @if (tarefaForm.controls.titulo.invalid && tarefaForm.controls.titulo.touched) {
+      <span style="color:red">O título é obrigatório.</span>
+    }
+
+    <button type="submit" [disabled]="tarefaForm.invalid">Adicionar</button>
+  </form>
+
+  <ul>
+    @for (tarefa of tarefas; track tarefa.id) {
+      <li>{{ tarefa.titulo }}</li>
+    }
+  </ul>
+</div>
