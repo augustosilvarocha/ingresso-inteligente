@@ -1,0 +1,15 @@
+<h1>Palestrantes</h1>
+@for (palestrante of palestrantes(); track palestrante.id) {
+  <div>
+    <img [src]="palestrante.foto" [alt]="palestrante.nome">
+    <p><strong>Nome:</strong> {{ palestrante.nome }}</p>
+    <p><strong>Cargo:</strong> {{ palestrante.cargo }}</p>
+    <p><strong>Empresa:</strong> {{ palestrante.empresa }}</p>
+    <p><strong>Biografia:</strong> {{ palestrante.bio }}</p>
+    <p><strong>Tema da Palestra:</strong> {{ palestrante.temaPalestra }}</p>
+    <p><strong>Trilha:</strong> {{ palestrante.trilha }}</p>
+    <p><strong>Nível:</strong> {{ palestrante.nivel }}</p>
+    <p><strong>Dia:</strong> {{ palestrante.dia }}</p>
+    <p><strong>Horário:</strong> {{ palestrante.horario }}</p>
+  </div>
+}
