@@ -1,0 +1,14 @@
+@if (ingresso()) {
+  <article>
+    <h1>{{ ingresso()!.nome }}</h1>
+    <p>Tipo: {{ ingresso()!.tipo }}</p>
+    <p>Data: {{ ingresso()!.data | date:'dd/MM/yyyy' }}</p>
+    <p>Preço: {{ ingresso()!.preco | currency:'BRL' }}</p>
+    <p>Disponível: {{ ingresso()!.lotePercentual }}%</p>
+    <p>Descrição: {{ ingresso()!.descricao }}</p>
+    <a routerLink="/home">← Voltar</a>
+  </article>
+} @else {
+  <p>Ingresso não encontrado.</p>
+  <a routerLink="/home">← Voltar</a>
+}

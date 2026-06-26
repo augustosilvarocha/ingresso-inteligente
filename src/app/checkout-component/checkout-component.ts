@@ -1,12 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { DatePipe, CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { CardComponent } from '../card/card';
 import { ResumoPipe } from '../resumo-pipe';
 import { TicketItemComponent } from '../ticket-item-component/ticket-item-component';
+import { ingressosDisponiveisReservados as dadosIngressos } from '../data/ingressos';
 
 @Component({
   selector: 'app-checkout-component',
-  imports: [TicketItemComponent, CardComponent, DatePipe, CurrencyPipe, ResumoPipe],
+  imports: [TicketItemComponent, CardComponent, DatePipe, CurrencyPipe, ResumoPipe, RouterLink],
   templateUrl: './checkout-component.html',
   styleUrl: './checkout-component.css',
 })
@@ -14,6 +16,8 @@ export class CheckoutComponent {
   qtd = signal<number>(0);
   mensagemStatus = signal<string>('Aguardando finalização...');
   desconto = signal<number>(0);
+
+  ingressosDisponiveisReservados = [...dadosIngressos];
 
   Cancelamento() {
     this.mensagemStatus.set('O usuário solicitou o cancelamento da compra!');
@@ -56,36 +60,6 @@ export class CheckoutComponent {
       return atual.filter((_, i) => i !== indexReal);
     });
   }
-
-  ingressosDisponiveisReservados = [
-    {
-      id: 1,
-      nome: 'VIP - Angular Conf 2026',
-      tipo: 'VIP',
-      data: new Date('2026-09-10T12:00:00'),
-      preco: 500,
-      descricao: 'Primeira fila e coquetel. Esse ingresso é pra quem quer aproveitar o evento ao máximo. Você fica bem perto do palco, entra antes de todo mundo e ainda curte um coquetel exclusivo no intervalo. Ideal pra fazer networking sem correria e viver a experiência completa',
-      lotePercentual: 12
-    },
-    {
-      id: 2,
-      nome: 'Standard - Angular Conf 2026',
-      tipo: 'STANDARD',
-      data: new Date('2026-09-10T12:00:00'),
-      preco: 150,
-      descricao: 'Palestras e networking.',
-      lotePercentual: 65
-    },
-    {
-      id: 3,
-      nome: 'Meia-Entrada - Angular Conf 2026',
-      tipo: 'MEIA',
-      data: new Date('2026-09-10T12:00:00'),
-      preco: 75,
-      descricao: 'Carteirinha obrigatória.',
-      lotePercentual: 40
-    }
-  ];
 
   carrinho = signal<any[]>([]);
 
