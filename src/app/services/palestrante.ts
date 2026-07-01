@@ -9,7 +9,7 @@ import { Palestrante } from '../models/models';
 export class PalestranteService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3001/api/teste';
+  private apiUrl = 'http://localhost:3001/api/palestrantes';
 
   buscarPalestrantes(): Observable<Palestrante[]> {
     return this.http.get<Palestrante[]>(this.apiUrl).pipe(
@@ -25,6 +25,16 @@ export class PalestranteService {
         console.error('Erro ao buscar palestrantes:', error);
         return of([]);
       }
+      )
+    );
+  }
+
+  buscarPalestrantesPorNome(nome: string): Observable<Palestrante[]> {
+    return this.http.get<Palestrante[]>(this.apiUrl).pipe(
+      map((palestrantes) =>
+        palestrantes.filter((palestrante) =>
+          palestrante.nome.toLowerCase().includes(nome.toLowerCase())
+        )
       )
     );
   }
