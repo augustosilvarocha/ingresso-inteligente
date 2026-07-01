@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PalestranteService } from '../services/palestrante';
+import { Palestrante } from '../models/models';
 
 @Component({
   selector: 'app-palestrantes',
@@ -11,8 +12,13 @@ import { PalestranteService } from '../services/palestrante';
 export class PalestrantesComponent {
   private palestranteService = inject(PalestranteService);
 
-  palestrantes = toSignal(
-    this.palestranteService.buscarPalestrantes(),
-    { initialValue: [] }
-  );
+  palestrantes: Palestrante[] = [];
+
+  constructor() {
+    this.palestranteService.buscarPalestrantes()
+      .pipe(takeUntilDestroyed())
+      .subscribe((palestrantes) => {
+        this.palestrantes = palestrantes;
+      });
+  }
 }
