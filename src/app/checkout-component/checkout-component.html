@@ -33,6 +33,7 @@
           <button (click)="adicionarAoCarrinho(ingresso)">
             Adicionar ao carrinho
           </button>
+          <a [routerLink]="['/ingresso', ingresso.id]">Ver detalhes</a>
         }
       </app-card>
     </li>
