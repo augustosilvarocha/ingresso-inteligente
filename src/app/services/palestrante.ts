@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap, map, catchError, of } from 'rxjs';
 import { Palestrante } from '../models/models';
 
 @Injectable({
@@ -9,9 +9,23 @@ import { Palestrante } from '../models/models';
 export class PalestranteService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3001/api/palestrantes';
+  private apiUrl = 'http://localhost:3001/api/teste';
 
   buscarPalestrantes(): Observable<Palestrante[]> {
-    return this.http.get<Palestrante[]>(this.apiUrl);
+    return this.http.get<Palestrante[]>(this.apiUrl).pipe(
+      tap((palestrantes) => {
+        console.log('Palestrantes buscados:', palestrantes.length);
+      }),
+      map((palestrantes) => 
+        palestrantes.filter(
+          (palestrante) => palestrante.empresa === 'Mercado Livre'
+        )
+      ),
+      catchError((error) => {
+        console.error('Erro ao buscar palestrantes:', error);
+        return of([]);
+      }
+      )
+    );
   }
 }

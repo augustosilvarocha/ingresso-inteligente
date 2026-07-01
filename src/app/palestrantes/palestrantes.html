@@ -1,5 +1,5 @@
 <h1>Palestrantes</h1>
-@for (palestrante of palestrantes(); track palestrante.id) {
+@for (palestrante of palestrantes; track palestrante.id) {
   <div>
     <img [src]="palestrante.foto" [alt]="palestrante.nome">
     <p><strong>Nome:</strong> {{ palestrante.nome }}</p>
