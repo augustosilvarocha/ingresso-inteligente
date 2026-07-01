@@ -1,6 +1,13 @@
 <h1>Palestrantes</h1>
-@for (palestrante of palestrantes; track palestrante.id) {
-  <div>
+<h3>Buscar por nome</h3>
+<input
+  type="text"
+  placeholder="Pesquisar por nome"
+  [value]="busca()"
+  (input)="busca.set($any($event.target).value)"
+>
+<br><br>
+@for (palestrante of palestrantesExibidos(); track palestrante.id) {  <div>
     <img [src]="palestrante.foto" [alt]="palestrante.nome">
     <p><strong>Nome:</strong> {{ palestrante.nome }}</p>
     <p><strong>Cargo:</strong> {{ palestrante.cargo }}</p>

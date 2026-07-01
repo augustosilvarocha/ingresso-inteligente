@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, computed, inject, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { PalestranteService } from '../services/palestrante';
 import { Palestrante } from '../models/models';
 
@@ -12,13 +13,33 @@ import { Palestrante } from '../models/models';
 export class PalestrantesComponent {
   private palestranteService = inject(PalestranteService);
 
-  palestrantes: Palestrante[] = [];
+  busca = signal('');
 
-  constructor() {
-    this.palestranteService.buscarPalestrantes()
-      .pipe(takeUntilDestroyed())
-      .subscribe((palestrantes) => {
-        this.palestrantes = palestrantes;
-      });
-  }
+  palestrantes = toSignal(
+    this.palestranteService.buscarPalestrantes(),
+    { initialValue: [] as Palestrante[] }
+  );
+
+  private busca$ = toObservable(this.busca);
+
+  private resultadosNome = toSignal(
+    this.busca$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((nome) => {
+        const nomeTratado = nome.trim();
+
+        return nomeTratado
+          ? this.palestranteService.buscarPalestrantesPorNome(nomeTratado)
+          : this.palestranteService.buscarPalestrantes();
+      })
+    ),
+    { initialValue: [] as Palestrante[] }
+  );
+
+  palestrantesExibidos = computed(() =>
+    this.busca().trim()
+      ? this.resultadosNome()
+      : this.palestrantes()
+  );
 }
