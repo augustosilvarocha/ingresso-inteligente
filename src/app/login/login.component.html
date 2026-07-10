@@ -1,0 +1,10 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="email">E-mail</label>
+  <input id="email" type="email" formControlName="email" />
+  <label for="senha">Senha</label>
+  <input id="senha" type="password" formControlName="senha" />
+  @if (erro) {
+    <p>E-mail ou senha inválidos.</p>
+  }
+  <button type="submit" [disabled]="form.invalid">Entrar</button>
+</form>
